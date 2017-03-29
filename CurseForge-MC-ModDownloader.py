@@ -19,10 +19,12 @@ if path.exists('history.txt') == False:
 if path.exists('./mods') == False:
 	mkdir('mods')
 
+# Abre e le o histórico
 oldHistory = open('history.txt','r')
 line2 = oldHistory.readlines()
-oldHistory.close()
+oldHistory.close() # Fecha o histórico, o velho não é mais utilizado
 
+# Novo histórico criado
 newHistory = open('history.txt','w+')
 
 line1 = modList.readlines()
