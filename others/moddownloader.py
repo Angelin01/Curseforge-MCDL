@@ -208,10 +208,10 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
 
-    for i in range(0, 10):
+    for i in range(0, 20):
         mod = ModItem("Teste")
         mod.addToTree(ui.treeDownload)
-        mod.updateProgress(i, 10)
+        mod.updateProgress(i, 20)
     
     sys.exit(app.exec_())
 

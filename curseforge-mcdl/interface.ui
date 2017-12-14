@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
+    <width>612</width>
     <height>538</height>
    </rect>
   </property>
@@ -23,6 +23,15 @@
       <height>270</height>
      </rect>
     </property>
+    <property name="sortingEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="headerHidden">
+     <bool>true</bool>
+    </property>
+    <attribute name="headerVisible">
+     <bool>false</bool>
+    </attribute>
     <column>
      <property name="text">
       <string>Progress bar</string>
@@ -39,7 +48,7 @@
      <rect>
       <x>10</x>
       <y>70</y>
-      <width>190</width>
+      <width>191</width>
       <height>391</height>
      </rect>
     </property>
@@ -184,7 +193,7 @@
    <widget class="QLabel" name="lblOptions">
     <property name="geometry">
      <rect>
-      <x>480</x>
+      <x>490</x>
       <y>10</y>
       <width>200</width>
       <height>20</height>
@@ -202,7 +211,7 @@
    <widget class="QGroupBox" name="grpModVersions">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>480</x>
       <y>180</y>
       <width>121</width>
       <height>90</height>
@@ -254,7 +263,7 @@
    <widget class="QGroupBox" name="grpPriority">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>480</x>
       <y>100</y>
       <width>121</width>
       <height>71</height>
@@ -293,7 +302,7 @@
    <widget class="QGroupBox" name="grpDir">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>480</x>
       <y>280</y>
       <width>121</width>
       <height>70</height>
@@ -328,9 +337,6 @@
       <string>Select directory...</string>
      </property>
     </widget>
-    <zorder>lblDir</zorder>
-    <zorder>btnDir</zorder>
-    <zorder>grpModVersions</zorder>
    </widget>
    <widget class="QPushButton" name="btnDownload">
     <property name="geometry">
@@ -349,7 +355,7 @@
    <widget class="QGroupBox" name="grpMcVersion">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>480</x>
       <y>40</y>
       <width>121</width>
       <height>51</height>
@@ -467,7 +473,7 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>480</x>
       <y>360</y>
       <width>121</width>
       <height>161</height>
