@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>601</width>
+    <height>538</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mod Downloader</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTreeWidget" name="treeDownload">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>40</y>
+      <width>240</width>
+      <height>270</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Progress bar</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Mod name</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QListWidget" name="listDownload">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>190</width>
+      <height>391</height>
+     </rect>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::ExtendedSelection</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblMods">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Mod list</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edtFilter">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>125</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnFilter">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>40</y>
+      <width>60</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Filter</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblDownloads">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>10</y>
+      <width>200</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Download progress</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="grpImpExp">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>470</y>
+      <width>191</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Mod list file import or export</string>
+    </property>
+    <widget class="QPushButton" name="btnImport">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Import</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnExport">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>20</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Export</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="grpNewMod">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>320</y>
+      <width>241</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Add new mod</string>
+    </property>
+    <widget class="QLineEdit" name="edtAddMod">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>151</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnAddMod">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>20</y>
+       <width>61</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add mod</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="lblOptions">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>10</y>
+      <width>200</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Options</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="grpModVersions">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>180</y>
+      <width>121</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Mod Versions</string>
+    </property>
+    <widget class="QCheckBox" name="chkAlpha">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>70</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Alpha</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="chkBeta">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>70</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Beta</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="chkRelease">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>70</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Release</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="grpPriority">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>100</y>
+      <width>121</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Priority</string>
+    </property>
+    <widget class="QRadioButton" name="radRecent">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>82</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Most recent</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radStable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>82</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Most Stable</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="grpDir">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>280</y>
+      <width>121</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Download directory</string>
+    </property>
+    <widget class="QLabel" name="lblDir">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>170</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>D:\Download\mods</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnDir">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>100</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select directory...</string>
+     </property>
+    </widget>
+    <zorder>lblDir</zorder>
+    <zorder>btnDir</zorder>
+    <zorder>grpModVersions</zorder>
+   </widget>
+   <widget class="QPushButton" name="btnDownload">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>470</y>
+      <width>111</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start
+ Download / Update</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="grpMcVersion">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>40</y>
+      <width>121</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Minecraft Version</string>
+    </property>
+    <widget class="QComboBox" name="cmbMcVersion">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>69</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>1.12.2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1.11.2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1.10.2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1.9.4</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1.8.9</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1.7.10</string>
+      </property>
+     </item>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="grpRemMod">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>470</y>
+      <width>121</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Remove selected mods</string>
+    </property>
+    <widget class="QPushButton" name="btnRemMod">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove Mods</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="grpUpdate">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>380</y>
+      <width>241</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Update depencies for selected mods</string>
+    </property>
+    <widget class="QCheckBox" name="chkOptDeps">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>170</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Include optional dependencies</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnUpdate">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>170</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update dependencies</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>360</y>
+      <width>121</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>edtFilter</tabstop>
+  <tabstop>btnFilter</tabstop>
+  <tabstop>listDownload</tabstop>
+  <tabstop>btnImport</tabstop>
+  <tabstop>btnExport</tabstop>
+  <tabstop>treeDownload</tabstop>
+  <tabstop>edtAddMod</tabstop>
+  <tabstop>btnAddMod</tabstop>
+  <tabstop>chkOptDeps</tabstop>
+  <tabstop>btnUpdate</tabstop>
+  <tabstop>btnRemMod</tabstop>
+  <tabstop>cmbMcVersion</tabstop>
+  <tabstop>radRecent</tabstop>
+  <tabstop>radStable</tabstop>
+  <tabstop>chkAlpha</tabstop>
+  <tabstop>chkBeta</tabstop>
+  <tabstop>chkRelease</tabstop>
+  <tabstop>btnDir</tabstop>
+  <tabstop>btnDownload</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
