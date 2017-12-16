@@ -62,6 +62,10 @@ def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=N
 	
 	return(downloadLink)
 	
+def modFileMD5(downloadLink):
+	webpage = BeautifulSoup(urlopen(downloadLink.rsplit('/', 1)[0]), "html.parser")
+	return(webpage.find("span", class_="md5").string)
+	
 
 
 
