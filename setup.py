@@ -13,6 +13,7 @@ setup(
 	url='https://github.com/Angelin01/Curseforge-MCDL',
 	install_requires=[
 		'beautifulsoup4',
+		'PyQt5',
 	]
 	include_package_data=True
 )
