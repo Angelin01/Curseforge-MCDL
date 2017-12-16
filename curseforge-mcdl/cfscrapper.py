@@ -1,7 +1,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-def checkDependencies(modName, optional):
+def checkDependencies(modName, optional, list=None):
 	try:
 	# Webpage consists of https://minecraft.curseforge.com/projects/modName/relations/dependencies[?filter-related-dependencies=3] (the last part will only grab required libraries)
 		parsed = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/relations/dependencies" + ("?filter-related-dependencies=3" if not optional else "")), 'html.parser')
@@ -16,4 +16,6 @@ def checkDependencies(modName, optional):
 	for item in dependencies:
 		dependencyList.append(item.find("a")["href"].rsplit('/', 1)[-1]) # Element href inside the a, take the contents after the last slash
 			
+	if list is not None:
+		list.extend(dependencyList)
 	return(dependencyList)
