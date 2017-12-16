@@ -214,49 +214,36 @@
       <x>480</x>
       <y>180</y>
       <width>121</width>
-      <height>90</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="title">
      <string>Mod Versions</string>
     </property>
-    <widget class="QCheckBox" name="chkAlpha">
+    <widget class="QRadioButton" name="radAll">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>70</width>
+       <width>82</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string>Alpha</string>
+      <string>All types</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="chkBeta">
+    <widget class="QRadioButton" name="radioReleases">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>40</y>
-       <width>70</width>
+       <width>101</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string>Beta</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="chkRelease">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>70</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Release</string>
+      <string>Releases only</string>
      </property>
     </widget>
    </widget>
@@ -303,7 +290,7 @@
     <property name="geometry">
      <rect>
       <x>480</x>
-      <y>280</y>
+      <y>260</y>
       <width>121</width>
       <height>70</height>
      </rect>
@@ -470,13 +457,13 @@
      </property>
     </widget>
    </widget>
-   <widget class="QTextBrowser" name="textBrowser">
+   <widget class="QTextBrowser" name="txtConsole">
     <property name="geometry">
      <rect>
       <x>480</x>
-      <y>360</y>
+      <y>340</y>
       <width>121</width>
-      <height>161</height>
+      <height>181</height>
      </rect>
     </property>
    </widget>
@@ -497,9 +484,6 @@
   <tabstop>cmbMcVersion</tabstop>
   <tabstop>radRecent</tabstop>
   <tabstop>radStable</tabstop>
-  <tabstop>chkAlpha</tabstop>
-  <tabstop>chkBeta</tabstop>
-  <tabstop>chkRelease</tabstop>
   <tabstop>btnDir</tabstop>
   <tabstop>btnDownload</tabstop>
  </tabstops>
