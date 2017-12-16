@@ -47,7 +47,9 @@ def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=N
 	
 	webpage = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/files?" + filter + sort), "html.parser")
 	
+	# Download links are found in "overflow-tip" classes
 	if releasesOnly is True:
+		# The class "release-phase" is used to mark releases, find the parent's parent and only then search for "overflow-tip"
 		fileNumber = webpage.find("div", class_="release-phase").parent.parent.find("a", class_="overflow-tip")["href"].rsplit('/', 1)[-1]
 	else:
 		fileNumber = webpage.find("a", class_="overflow-tip")["href"].rsplit('/', 1)[-1]
