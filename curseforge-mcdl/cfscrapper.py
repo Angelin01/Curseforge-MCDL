@@ -2,6 +2,8 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from threading import Lock
 
+# "list" variables are for threading. If passed, functions will add their results to the list
+
 depLock = Lock()
 def checkDependencies(modName, optional, list=None):
 	try:
@@ -24,3 +26,44 @@ def checkDependencies(modName, optional, list=None):
 		depLock.release()
 	
 	return(dependencyList)
+
+# mostRecent = True for most recent, False will prioritize stable releases first
+# releasesOnly = True for only releases, False will allow it to download alphas and betas
+
+downloadLock = Lock()
+def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=None):
+	filter = {
+		"1.12.2": "filter-game-version=1738749986%3A628",
+		"1.11.2": "filter-game-version=1738749986%3A599",
+		"1.10.2": "filter-game-version=1738749986%3A572",
+		"1.9.4": "filter-game-version=1738749986%3A552",
+		"1.8.9": "filter-game-version=1738749986%3A4",
+		"1.7.10": "filter-game-version=1738749986%3A5"
+	}.get(mcVersion, "1.12.2")
+	if mostRecent is True:
+		sort = "&sort=-datecreated"
+	else:
+		sort = "&sort=releasetype"
+	
+	webpage = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/files?" + filter + sort), "html.parser")
+	
+	if releasesOnly is True:
+		fileNumber = webpage.find("div", class_="release-phase").parent.parent.find("a", class_="overflow-tip")["href"].rsplit('/', 1)[-1]
+	else:
+		fileNumber = webpage.find("a", class_="overflow-tip")["href"].rsplit('/', 1)[-1]
+		
+	downloadLink = "https://minecraft.curseforge.com/projects/" + modName + "/files/" + fileNumber + "/download"
+	if list is not None:
+		downloadLock.acquire()
+		list.append(downloadLink)
+		downloadLock.release()
+	
+	return(downloadLink)
+	
+
+
+
+
+
+
+
