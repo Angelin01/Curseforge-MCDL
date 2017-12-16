@@ -1,6 +1,8 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+from threading import Lock
 
+depLock = Lock()
 def checkDependencies(modName, optional, list=None):
 	try:
 	# Webpage consists of https://minecraft.curseforge.com/projects/modName/relations/dependencies[?filter-related-dependencies=3] (the last part will only grab required libraries)
@@ -17,5 +19,8 @@ def checkDependencies(modName, optional, list=None):
 		dependencyList.append(item.find("a")["href"].rsplit('/', 1)[-1]) # Element href inside the a, take the contents after the last slash
 			
 	if list is not None:
+		depLock.acquire()
 		list.extend(dependencyList)
+		depLock.release()
+	
 	return(dependencyList)
