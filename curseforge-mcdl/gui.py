@@ -145,6 +145,7 @@ class Ui_MainWindow(object):
 		# --------------------
 		self.modList = [] # Temp, should auto import from file in the future
 		self.btnAddMod.clicked.connect(self.addMod)
+		self.edtAddMod.returnPressed.connect(self.addMod)
 		self.btnRemMod.clicked.connect(self.remMod)
 		self.btnImport.clicked.connect(self.importFile)
 
