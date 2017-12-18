@@ -144,6 +144,7 @@ class Ui_MainWindow(object):
 		# --------------------
 		self.modList = [] # Temp, should auto import from file in the future
 		self.btnAddMod.clicked.connect(self.addMod)
+		self.btnRemMod.clicked.connect(self.remMod)
 
 	def retranslateUi(self, MainWindow):
 		# --------------------
@@ -200,6 +201,15 @@ class Ui_MainWindow(object):
 		self.modList.append(modToAdd)
 		self.listDownload.addItem(modToAdd)
 		self.edtAddMod.clear()
+		
+	def remMod(self):
+		itemsToRem = self.listDownload.selectedItems()
+		if len(itemsToRem) == 0:
+			return
+			
+		for item in itemsToRem:
+			self.modList.remove(item.text())
+			self.listDownload.takeItem(self.listDownload.indexFromItem(item).row()) # Takes the row from the item's index after searching for the item again... This is so bad, why is there no remove
 		
 		
 if __name__ == "__main__":
