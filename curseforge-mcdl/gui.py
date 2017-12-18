@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 	
@@ -145,6 +146,7 @@ class Ui_MainWindow(object):
 		self.modList = [] # Temp, should auto import from file in the future
 		self.btnAddMod.clicked.connect(self.addMod)
 		self.btnRemMod.clicked.connect(self.remMod)
+		self.btnImport.clicked.connect(self.importFile)
 
 	def retranslateUi(self, MainWindow):
 		# --------------------
@@ -210,6 +212,18 @@ class Ui_MainWindow(object):
 		for item in itemsToRem:
 			self.modList.remove(item.text())
 			self.listDownload.takeItem(self.listDownload.indexFromItem(item).row()) # Takes the row from the item's index after searching for the item again... This is so bad, why is there no remove
+			
+	def importFile(self):
+		file = QtWidgets.QFileDialog.getOpenFileName()[0]
+		if file == "":
+			return
+		
+		fileMods = open(file, 'r').readlines()
+		for mod in fileMods:
+			mod = mod.strip()
+			if not mod.startswith('#') and mod.strip() not in self.modList:
+				self.modList.append(mod)
+				self.listDownload.addItem(mod)		
 		
 		
 if __name__ == "__main__":
