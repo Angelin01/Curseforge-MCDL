@@ -1,5 +1,4 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from os import path
 
 
 class Ui_MainWindow(object):
