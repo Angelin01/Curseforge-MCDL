@@ -44,13 +44,21 @@ def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=N
 		sort = "&sort=-datecreated"
 	else:
 		sort = "&sort=releasetype"
-	
-	webpage = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/files?" + filter + sort), "html.parser")
-	
+
+	try:
+		webpage = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/files?" + filter + sort), "html.parser")
+	except:
+		print("Could not find download link for " + modName)
+		return(None)
+
 	# Download links are found in "overflow-tip" classes
 	if releasesOnly is True:
 		# The class "release-phase" is used to mark releases, find the parent's parent and only then search for "overflow-tip"
-		fileNumber = webpage.find("div", class_="release-phase").parent.parent.find("a", class_="overflow-tip")["href"].rsplit('/', 1)[-1]
+		try:
+			fileNumber = webpage.find("div", class_="release-phase").parent.parent.find("a", class_="overflow-tip")["href"].rsplit('/', 1)[-1]
+		except:
+			print("Mod " + modName + " has no release version.")
+			return(None)
 	else:
 		fileNumber = webpage.find("a", class_="overflow-tip")["href"].rsplit('/', 1)[-1]
 		
@@ -59,7 +67,7 @@ def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=N
 		downloadLock.acquire()
 		list.append(downloadLink)
 		downloadLock.release()
-	
+
 	return(downloadLink)
 	
 def modFileMD5(downloadLink):

@@ -7,6 +7,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from requests import get
+from threading import Thread
 
 # -------------
 # Main window
@@ -172,6 +174,42 @@ class Ui_MainWindow(object):
         self.btnUpdateDownload.setText(_translate("MainWindow", "Update dependencies\n"
 "and download mods"))
 
+class ModItem(object):
+    def __init__(self, name):
+        self.name = name
+        self.progress = QtWidgets.QProgressBar()
+        self.progress.setRange(0, 100)
+        self.progress.setValue(0)
+        self.progress.setFixedHeight(15)
+
+    def addToTree(self, tree):
+        self.item = QtWidgets.QTreeWidgetItem(tree)
+        tree.setItemWidget(self.item, 0, self.progress)
+        self.item.setText(1, self.name)
+
+    def updateProgress(self, current, total):
+        if current > 0:
+            percent = current/total * 100
+        else:
+            percent = 0
+        self.progress.setValue(percent)
+
+def startDownload(mod):
+    print("start download\n")
+    request = get("https://minecraft.curseforge.com/projects/applied-energistics-2/files/2503759/download", stream=True)
+    with open("teste.jar", "wb") as modFile:
+        size = int(request.headers.get("content-length"))
+        print(size, end='\n')
+        mod.updateProgress(0, size)
+        i = 0
+        for chunk in request.iter_content(chunk_size=1024):
+            i = i + 1
+            modFile.write(chunk)
+            modFile.flush()
+            mod.updateProgress(i, size/1024)
+        modFile.close()
+    print("end download\n")
+
 # -----------
 # Main code
 # -----------
@@ -183,11 +221,12 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+    
+    mod = ModItem("applied-energistics-2")
+    mod.addToTree(ui.treeDownload)
 
-    for i in range(0, 20):
-        mod = ModItem("Teste")
-        mod.addToTree(ui.treeDownload)
-        mod.updateProgress(i, 20)
+    downloadThread = Thread(target = startDownload, args = (mod, ))
+    downloadThread.start()
     
     sys.exit(app.exec_())
 

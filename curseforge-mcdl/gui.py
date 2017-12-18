@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from threading import Thread
 
+import downloader
 
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
@@ -154,6 +156,9 @@ class Ui_MainWindow(object):
 		self.btnImport.clicked.connect(self.importFile)
 		self.btnExport.clicked.connect(self.exportFile)
 
+		# Download
+		self.btnDownload.clicked.connect(self.startDownload)
+
 	def retranslateUi(self, MainWindow):
 		# --------------------
 		# Auto generated stuff
@@ -241,6 +246,15 @@ class Ui_MainWindow(object):
 		with open(file, 'w') as exportFile:
 			for mod in self.modList:
 				exportFile.write(mod + "\n")
+
+	def startDownload(self):
+		print(int(self.listDownload.count()))
+		for index in range(int(self.listDownload.count())):
+			mod = downloader.ModItem(self.listDownload.item(index).text(), "1.12.2")
+			if mod.downloadLink is not None:
+				mod.addToTree(self.treeDownload)
+				downloadThread = downloader.DownloadThread(mod)
+				downloadThread.start()
 		
 if __name__ == "__main__":
 	import sys
