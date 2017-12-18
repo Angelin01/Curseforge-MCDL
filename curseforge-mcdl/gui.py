@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from os import path
 
 
 class Ui_MainWindow(object):
@@ -144,10 +145,15 @@ class Ui_MainWindow(object):
 		# Manually added stuff
 		# --------------------
 		self.modList = [] # Temp, should auto import from file in the future
+		
+		# Add and remove mods
 		self.btnAddMod.clicked.connect(self.addMod)
 		self.edtAddMod.returnPressed.connect(self.addMod)
 		self.btnRemMod.clicked.connect(self.remMod)
+		
+		# Import and export
 		self.btnImport.clicked.connect(self.importFile)
+		self.btnExport.clicked.connect(self.exportFile)
 
 	def retranslateUi(self, MainWindow):
 		# --------------------
@@ -215,17 +221,27 @@ class Ui_MainWindow(object):
 			self.listDownload.takeItem(self.listDownload.indexFromItem(item).row()) # Takes the row from the item's index after searching for the item again... This is so bad, why is there no remove
 			
 	def importFile(self):
-		file = QtWidgets.QFileDialog.getOpenFileName()[0]
-		if file == "":
+		# For the future: add small hook to save last used dir
+		file = QtWidgets.QFileDialog.getOpenFileName(None, "Select mod list file")[0]
+		if file == "": # User canceled
 			return
 		
 		fileMods = open(file, 'r').readlines()
 		for mod in fileMods:
 			mod = mod.strip()
-			if not mod.startswith('#') and mod.strip() not in self.modList:
+			if not mod.startswith('#') and mod not in self.modList:
 				self.modList.append(mod)
 				self.listDownload.addItem(mod)		
 		
+	def exportFile(self):
+		file = QtWidgets.QFileDialog.getSaveFileName(None, "Select new mod list file")[0]
+		if file == "": # User canceled
+			return
+		# Overwrite warning is given by dialog itself, neat!
+			
+		with open(file, 'w') as exportFile:
+			for mod in self.modList:
+				exportFile.write(mod + "\n")
 		
 if __name__ == "__main__":
 	import sys
