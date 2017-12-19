@@ -1,2 +1,3 @@
 include README.md
 include curseforge-mcdl/interface.ui
+recursive-include curseforge-mcdl/icons *.ico
