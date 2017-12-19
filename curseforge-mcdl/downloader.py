@@ -16,7 +16,6 @@ class ModItem(object):
 		self.mostRecent = mostRecent
 		self.list = list
 		self.downloadLink = ""
-		self.fileName = name + ".jar" # falta catar nome do arquivo
 
 	def addToTree(self, tree):
 		self.item = QtWidgets.QTreeWidgetItem(tree)
@@ -24,7 +23,7 @@ class ModItem(object):
 		self.item.setText(1, "Starting")
 	
 	def startDownload(self):
-		self.thread = DownloadThread(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list, self.fileName)
+		self.thread = DownloadThread(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list)
 		self.thread.kept.connect(self.statusKept)
 		self.thread.failed.connect(self.statusFailed)
 		self.thread.downloading.connect(self.statusDownloading)
@@ -46,13 +45,12 @@ class DownloadThread(QtCore.QThread):
 	downloading = QtCore.pyqtSignal()
 	complete = QtCore.pyqtSignal()
 
-	def __init__(self, name, mcVersion, releasesOnly, mostRecent, list, outFile):
+	def __init__(self, name, mcVersion, releasesOnly, mostRecent, list):
 		self.name = name
 		self.mcVersion = mcVersion
 		self.releasesOnly = releasesOnly
 		self.mostRecent = mostRecent
 		self.list = list
-		self.outFile = outFile
 		QtCore.QThread.__init__(self)
 	
 	def run(self):
