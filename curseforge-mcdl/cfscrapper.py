@@ -63,7 +63,7 @@ def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=N
 		file = webpage.find("a", class_="overflow-tip")
 		
 	downloadLink = "https://minecraft.curseforge.com/projects/" + modName + "/files/" + file["href"].rsplit('/', 1)[-1] + "/download"
-	fileName = file.getText().rstrip(".jar") + ".jar" # Fixes files with no .jar
+	fileName = file.getText().replace(".jar", "") + ".jar" # Fixes files with no .jar, could break if file has .jar in the middle but...
 	if list is not None:
 		downloadLock.acquire()
 		list.append(downloadLink)
