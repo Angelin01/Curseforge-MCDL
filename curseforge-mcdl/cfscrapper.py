@@ -74,10 +74,9 @@ def modFileMD5(downloadLink):
 	webpage = BeautifulSoup(urlopen(downloadLink.rsplit('/', 1)[0]), "html.parser")
 	return(webpage.find("span", class_="md5").string)
 	
-
-
-
-
-
-
-
+def modExists(modName):
+	try:
+		urllib.request.urlopen("https://minecraft.curseforge.com/projects/" + modName)
+	except urllib.error.HTTPError: 
+		return(False)
+	return(True)
