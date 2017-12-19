@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from threading import Thread
+import os
 
 import downloader
 
@@ -146,11 +147,15 @@ class Ui_MainWindow(object):
 		# Manually added stuff
 		# --------------------
 		self.modList = [] # Temp, should auto import from file in the future
-		self.modDownloadList = []
+		self.modDownloadList = [] # Same
+		self.downloadDir = os.path.dirname(os.path.abspath(__file__)).replace(os.path.sep, "/") + "/mods" # Same
 		
 		# Set radio buttons by default
 		self.radReleases.setChecked(True)
 		self.radStable.setChecked(True)
+		
+		# Download directory
+		self.btnDir.clicked.connect(self.updateDir)
 		
 		# Add and remove mods
 		self.btnAddMod.clicked.connect(self.addMod)
@@ -187,7 +192,7 @@ class Ui_MainWindow(object):
 		self.radAll.setText(_translate("MainWindow", "All types"))
 		self.radReleases.setText(_translate("MainWindow", "Releases only"))
 		self.grpDir.setTitle(_translate("MainWindow", "Download directory"))
-		self.lblDir.setText(_translate("MainWindow", "D:\\Download\\mods"))
+		self.lblDir.setText(_translate("MainWindow", os.path.dirname(os.path.abspath(__file__)).replace(os.path.sep, "/") + "/mods"))
 		self.btnDir.setText(_translate("MainWindow", "Select directory..."))
 		self.btnDownload.setText(_translate("MainWindow", "Start\nDownload / Update"))
 		self.grpMcVersion.setTitle(_translate("MainWindow", "Minecraft Version"))
@@ -258,11 +263,20 @@ class Ui_MainWindow(object):
 		self.treeDownload.clear()
 		releasesOnly = self.radReleases.isChecked()
 		mostRecent = self.radRecent.isChecked()
+		downloadDir = self.downloadDir
 		for item in self.modList:
-			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), releasesOnly, mostRecent)
+			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), releasesOnly, mostRecent, None, downloadDir)
 			self.modDownloadList.append(mod)
 			mod.addToTree(self.treeDownload)
 			mod.startDownload()
+			
+	def updateDir(self):
+		directory = QtWidgets.QFileDialog.getExistingDirectory(None, "Select download directory")
+		if directory == "":
+			return
+		
+		self.downloadDir = directory
+		self.lblDir.setText(directory)
 			
 class OutLog:
 	def __init__(self, txtBox, color=None):
