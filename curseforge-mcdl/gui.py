@@ -253,8 +253,7 @@ class Ui_MainWindow(object):
 			mod = downloader.ModItem(self.listDownload.item(index).text(), "1.12.2")
 			if mod.downloadLink is not None:
 				mod.addToTree(self.treeDownload)
-				downloadThread = downloader.DownloadThread(mod)
-				downloadThread.start()
+				mod.startDownload()
 		
 if __name__ == "__main__":
 	import sys
