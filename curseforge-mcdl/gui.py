@@ -257,10 +257,8 @@ class Ui_MainWindow(object):
 		self.treeDownload.clear()
 		for item in self.modList:
 			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), self.radioReleases.isChecked(), self.radRecent.isChecked())
-			if mod.downloadLink is not None:
-				self.modDownloadList.append(mod)
-				mod.addToTree(self.treeDownload)
-		for mod in self.modDownloadList:
+			self.modDownloadList.append(mod)
+			mod.addToTree(self.treeDownload)
 			mod.startDownload()
 			
 class OutLog:

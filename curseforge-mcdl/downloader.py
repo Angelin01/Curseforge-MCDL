@@ -1,7 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 from requests import get
 from os import path, mkdir
-from threading import Thread
 
 import cfscrapper
 
@@ -12,32 +11,60 @@ import cfscrapper
 class ModItem(object):
 	def __init__(self, name, mcVersion, releasesOnly=True, mostRecent=False, list=None):
 		self.name = name
-		self.downloadLink = cfscrapper.downloadLink(name, mcVersion, releasesOnly, mostRecent, list)
+		self.mcVersion = mcVersion
+		self.releasesOnly = releasesOnly
+		self.mostRecent = mostRecent
+		self.list = list
+		self.downloadLink = ""
 		self.fileName = name + ".jar" # falta catar nome do arquivo
 
 	def addToTree(self, tree):
 		self.item = QtWidgets.QTreeWidgetItem(tree)
 		self.item.setText(0, self.name)
-		self.item.setText(1, "Downloading")
+		self.item.setText(1, "Starting")
 	
 	def startDownload(self):
-		self.thread = DownloadThread(self.downloadLink, self.fileName)
-		self.thread.finished.connect(self.onFinish)
+		self.thread = DownloadThread(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list, self.fileName)
+		self.thread.kept.connect(self.statusKept)
+		self.thread.failed.connect(self.statusFailed)
+		self.thread.downloading.connect(self.statusDownloading)
+		self.thread.complete.connect(self.statusComplete)
 		self.thread.start()
 	
-	def onFinish(self):
+	def statusKept(self):
+		self.item.setText(1, "Kept")
+	def statusFailed(self):
+		self.item.setText(1, "Failed")
+	def statusDownloading(self):
+		self.item.setText(1, "Downloading")
+	def statusComplete(self):
 		self.item.setText(1, "Complete")
 
 class DownloadThread(QtCore.QThread):
-	def __init__(self, url, outFile):
-		self.url = url
+	kept = QtCore.pyqtSignal()
+	failed = QtCore.pyqtSignal()
+	downloading = QtCore.pyqtSignal()
+	complete = QtCore.pyqtSignal()
+
+	def __init__(self, name, mcVersion, releasesOnly, mostRecent, list, outFile):
+		self.name = name
+		self.mcVersion = mcVersion
+		self.releasesOnly = releasesOnly
+		self.mostRecent = mostRecent
+		self.list = list
 		self.outFile = outFile
 		QtCore.QThread.__init__(self)
 	
 	def run(self):
-		downloadThread(self.url, self.outFile)
+		dllink = cfscrapper.downloadLink(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list)
+		if dllink is not None:
+			self.downloading.emit()
+			downloadJob(dllink[0], dllink[1])
+			self.complete.emit()
+		else:
+			self.failed.emit()
 		
-def downloadThread(url, outFile):
+def downloadJob(url, outFile):
 	if path.exists("./mods") == False:
 		mkdir("mods")
 	
@@ -45,9 +72,7 @@ def downloadThread(url, outFile):
 	request = get(url, stream=True)
 	with open("./mods/" + outFile, "wb") as modFile:
 		size = int(request.headers.get("content-length"))
-		i = 0
 		for chunk in request.iter_content(chunk_size=1024):
-			i = i + 1
 			modFile.write(chunk)
 			modFile.flush()
 		modFile.close()
