@@ -23,6 +23,9 @@
       <height>270</height>
      </rect>
     </property>
+    <property name="indentation">
+     <number>0</number>
+    </property>
     <property name="sortingEnabled">
      <bool>false</bool>
     </property>
@@ -42,6 +45,14 @@
       <string>Mod name</string>
      </property>
     </column>
+    <item>
+     <property name="text">
+      <string>New Item</string>
+     </property>
+     <property name="text">
+      <string>asdsadasdasdsad</string>
+     </property>
+    </item>
    </widget>
    <widget class="QListWidget" name="listDownload">
     <property name="geometry">
@@ -233,7 +244,7 @@
       <string>All types</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="radioReleases">
+    <widget class="QRadioButton" name="radReleases">
      <property name="geometry">
       <rect>
        <x>10</x>

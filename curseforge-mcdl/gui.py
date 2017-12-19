@@ -70,9 +70,9 @@ class Ui_MainWindow(object):
 		self.radAll = QtWidgets.QRadioButton(self.grpModVersions)
 		self.radAll.setGeometry(QtCore.QRect(10, 20, 82, 17))
 		self.radAll.setObjectName("radAll")
-		self.radioReleases = QtWidgets.QRadioButton(self.grpModVersions)
-		self.radioReleases.setGeometry(QtCore.QRect(10, 40, 101, 17))
-		self.radioReleases.setObjectName("radioReleases")
+		self.radReleases = QtWidgets.QRadioButton(self.grpModVersions)
+		self.radReleases.setGeometry(QtCore.QRect(10, 40, 101, 17))
+		self.radReleases.setObjectName("radReleases")
 		self.grpDir = QtWidgets.QGroupBox(self.centralwidget)
 		self.grpDir.setGeometry(QtCore.QRect(480, 260, 121, 70))
 		self.grpDir.setObjectName("grpDir")
@@ -149,7 +149,7 @@ class Ui_MainWindow(object):
 		self.modDownloadList = []
 		
 		# Set radio buttons by default
-		self.radioReleases.setChecked(True)
+		self.radReleases.setChecked(True)
 		self.radStable.setChecked(True)
 		
 		# Add and remove mods
@@ -173,6 +173,7 @@ class Ui_MainWindow(object):
 		self.treeDownload.setSortingEnabled(False)
 		self.treeDownload.headerItem().setText(0, _translate("MainWindow", "Progress bar"))
 		self.treeDownload.headerItem().setText(1, _translate("MainWindow", "Mod name"))
+		self.treeDownload.setIndentation(0)
 		self.lblMods.setText(_translate("MainWindow", "Mod list"))
 		self.btnFilter.setText(_translate("MainWindow", "Filter"))
 		self.lblDownloads.setText(_translate("MainWindow", "Download progress"))
@@ -184,7 +185,7 @@ class Ui_MainWindow(object):
 		self.lblOptions.setText(_translate("MainWindow", "Options"))
 		self.grpModVersions.setTitle(_translate("MainWindow", "Mod Versions"))
 		self.radAll.setText(_translate("MainWindow", "All types"))
-		self.radioReleases.setText(_translate("MainWindow", "Releases only"))
+		self.radReleases.setText(_translate("MainWindow", "Releases only"))
 		self.grpDir.setTitle(_translate("MainWindow", "Download directory"))
 		self.lblDir.setText(_translate("MainWindow", "D:\\Download\\mods"))
 		self.btnDir.setText(_translate("MainWindow", "Select directory..."))
@@ -255,7 +256,7 @@ class Ui_MainWindow(object):
 	def startDownload(self):
 		modDownloadList = []
 		self.treeDownload.clear()
-		releasesOnly = self.radioReleases.isChecked()
+		releasesOnly = self.radReleases.isChecked()
 		mostRecent = self.radRecent.isChecked()
 		for item in self.modList:
 			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), releasesOnly, mostRecent)
