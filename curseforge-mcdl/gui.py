@@ -255,8 +255,10 @@ class Ui_MainWindow(object):
 	def startDownload(self):
 		modDownloadList = []
 		self.treeDownload.clear()
+		releasesOnly = self.radioReleases.isChecked()
+		mostRecent = self.radRecent.isChecked()
 		for item in self.modList:
-			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), self.radioReleases.isChecked(), self.radRecent.isChecked())
+			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), releasesOnly, mostRecent)
 			self.modDownloadList.append(mod)
 			mod.addToTree(self.treeDownload)
 			mod.startDownload()
@@ -287,7 +289,7 @@ if __name__ == "__main__":
 	MainWindow = QtWidgets.QMainWindow()
 	ui = Ui_MainWindow()
 	ui.setupUi(MainWindow)
-	sys.stdout = OutLog(ui.txtConsole)
-	sys.stderr = OutLog(ui.txtConsole, QtGui.QColor(255,0,0))
+	#sys.stdout = OutLog(ui.txtConsole)
+	#sys.stderr = OutLog(ui.txtConsole, QtGui.QColor(255,0,0))
 	MainWindow.show()
 	sys.exit(app.exec_())

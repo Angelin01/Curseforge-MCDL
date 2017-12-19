@@ -32,7 +32,7 @@ def checkDependencies(modName, optional, list=None):
 
 downloadLock = Lock()
 def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=None):
-	filter = {
+	versionFilter = {
 		"1.12.2": "filter-game-version=1738749986%3A628",
 		"1.11.2": "filter-game-version=1738749986%3A599",
 		"1.10.2": "filter-game-version=1738749986%3A572",
@@ -46,7 +46,7 @@ def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=N
 		sort = "&sort=releasetype"
 
 	try:
-		webpage = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/files?" + filter + sort), "html.parser")
+		webpage = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/files?" + versionFilter + sort), "html.parser")
 	except:
 		print("Could not find download link for " + modName)
 		return(None)
@@ -54,13 +54,16 @@ def downloadLink(modName, mcVersion, releasesOnly=True, mostRecent=False, list=N
 	# Download links are found in "overflow-tip" classes
 	if releasesOnly is True:
 		# The class "release-phase" is used to mark releases, find the parent's parent and only then search for "overflow-tip"
-		try:
-			file = webpage.find("div", class_="release-phase").parent.parent.find("a", class_="overflow-tip")
-		except:
-			print("Mod " + modName + " has no release version.")
+		file = webpage.find("div", class_="release-phase")
+		if file is None:
+			print("Mod " + modName + " has no release-phase version available for " + mcVersion)
 			return(None)
+		file = file.parent.parent.find("a", class_="overflow-tip")	
 	else:
 		file = webpage.find("a", class_="overflow-tip")
+		if file is None:
+			print("Mod " + modName + " has no downloads available for " + mcVersion)
+			return(None)
 		
 	downloadLink = "https://minecraft.curseforge.com/projects/" + modName + "/files/" + file["href"].rsplit('/', 1)[-1] + "/download"
 	fileName = file.getText().replace(".jar", "") + ".jar" # Fixes files with no .jar, could break if file has .jar in the middle but...
