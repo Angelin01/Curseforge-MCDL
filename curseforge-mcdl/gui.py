@@ -262,6 +262,26 @@ class Ui_MainWindow(object):
 				mod.addToTree(self.treeDownload)
 		for mod in self.modDownloadList:
 			mod.startDownload()
+			
+class OutLog:
+	def __init__(self, txtBox, color=None):
+		self.txtBox = txtBox
+		self.color = color
+
+	def write(self, m):
+		if self.color:
+			tc = self.txtBox.textColor()
+			self.txtBox.setTextColor(self.color)
+
+		self.txtBox.moveCursor(QtGui.QTextCursor.End)
+		if m != "\n":
+			self.txtBox.insertPlainText("* " + m)
+		else:
+			self.txtBox.insertPlainText(m)
+		if self.color:
+			self.txtBox.setTextColor(tc)
+
+		
 		
 if __name__ == "__main__":
 	import sys
@@ -269,5 +289,7 @@ if __name__ == "__main__":
 	MainWindow = QtWidgets.QMainWindow()
 	ui = Ui_MainWindow()
 	ui.setupUi(MainWindow)
+	sys.stdout = OutLog(ui.txtConsole)
+	sys.stderr = OutLog(ui.txtConsole, QtGui.QColor(255,0,0))
 	MainWindow.show()
 	sys.exit(app.exec_())
