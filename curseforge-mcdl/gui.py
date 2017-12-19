@@ -274,10 +274,8 @@ class OutLog:
 			self.txtBox.setTextColor(self.color)
 
 		self.txtBox.moveCursor(QtGui.QTextCursor.End)
-		if m != "\n":
-			self.txtBox.insertPlainText("* " + m)
-		else:
-			self.txtBox.insertPlainText(m)
+		self.txtBox.insertPlainText(m)
+		
 		if self.color:
 			self.txtBox.setTextColor(tc)
 

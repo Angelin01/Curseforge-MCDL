@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 from requests import get
 from os import path, mkdir
 
@@ -32,12 +32,15 @@ class ModItem(object):
 	
 	def statusKept(self):
 		self.item.setText(1, "Kept")
+		self.item.setIcon(1, QtGui.QIcon("icons/kept.ico"))
 	def statusFailed(self):
 		self.item.setText(1, "Failed")
+		self.item.setIcon(1, QtGui.QIcon("icons/failed.ico"))
 	def statusDownloading(self):
 		self.item.setText(1, "Downloading")
 	def statusComplete(self):
 		self.item.setText(1, "Complete")
+		self.item.setIcon(1, QtGui.QIcon("icons/complete.ico"))
 
 class DownloadThread(QtCore.QThread):
 	kept = QtCore.pyqtSignal()
