@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from requests import get
 from os import path, mkdir
 from threading import Thread
@@ -14,19 +14,30 @@ class ModItem(object):
 		self.name = name
 		self.downloadLink = cfscrapper.downloadLink(name, mcVersion, releasesOnly, mostRecent, list)
 		self.fileName = name + ".jar" # falta catar nome do arquivo
-		self.status = "Download"
 
 	def addToTree(self, tree):
 		self.item = QtWidgets.QTreeWidgetItem(tree)
 		self.item.setText(0, self.name)
-		self.item.setText(1, self.status)
+		self.item.setText(1, "Downloading")
 	
 	def startDownload(self):
-		self.thread = Thread(target=downloadThread, args=(self.downloadLink, self.fileName))
+		self.thread = DownloadThread(self.downloadLink, self.fileName)
+		self.thread.finished.connect(self.onFinish)
 		self.thread.start()
-
-def downloadThread(url, outFile):
 	
+	def onFinish(self):
+		self.item.setText(1, "Complete")
+
+class DownloadThread(QtCore.QThread):
+	def __init__(self, url, outFile):
+		self.url = url
+		self.outFile = outFile
+		QtCore.QThread.__init__(self)
+	
+	def run(self):
+		downloadThread(self.url, self.outFile)
+		
+def downloadThread(url, outFile):
 	if path.exists("./mods") == False:
 		mkdir("mods")
 	
@@ -41,3 +52,4 @@ def downloadThread(url, outFile):
 			modFile.flush()
 		modFile.close()
 	print(outFile + ": download finished")
+

@@ -146,6 +146,11 @@ class Ui_MainWindow(object):
 		# Manually added stuff
 		# --------------------
 		self.modList = [] # Temp, should auto import from file in the future
+		self.modDownloadList = []
+		
+		# Set radio buttons by default
+		self.radioReleases.setChecked(True)
+		self.radStable.setChecked(True)
 		
 		# Add and remove mods
 		self.btnAddMod.clicked.connect(self.addMod)
@@ -248,12 +253,15 @@ class Ui_MainWindow(object):
 				exportFile.write(mod + "\n")
 
 	def startDownload(self):
-		print(int(self.listDownload.count()))
-		for index in range(int(self.listDownload.count())):
-			mod = downloader.ModItem(self.listDownload.item(index).text(), "1.12.2")
+		modDownloadList = []
+		self.treeDownload.clear()
+		for item in self.modList:
+			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), self.radioReleases.isChecked(), self.radRecent.isChecked())
 			if mod.downloadLink is not None:
+				self.modDownloadList.append(mod)
 				mod.addToTree(self.treeDownload)
-				mod.startDownload()
+		for mod in self.modDownloadList:
+			mod.startDownload()
 		
 if __name__ == "__main__":
 	import sys
