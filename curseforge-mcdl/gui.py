@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from threading import Thread
-import os
+from os import path
 
 import downloader
 
@@ -148,7 +147,7 @@ class Ui_MainWindow(object):
 		# --------------------
 		self.modList = [] # Temp, should auto import from file in the future
 		self.modDownloadList = [] # Same
-		self.downloadDir = os.path.dirname(os.path.abspath(__file__)).replace(os.path.sep, "/") + "/mods" # Same
+		self.downloadDir = path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/mods" # Same
 		
 		# Set radio buttons by default
 		self.radReleases.setChecked(True)
@@ -192,7 +191,7 @@ class Ui_MainWindow(object):
 		self.radAll.setText(_translate("MainWindow", "All types"))
 		self.radReleases.setText(_translate("MainWindow", "Releases only"))
 		self.grpDir.setTitle(_translate("MainWindow", "Download directory"))
-		self.lblDir.setText(_translate("MainWindow", os.path.dirname(os.path.abspath(__file__)).replace(os.path.sep, "/") + "/mods"))
+		self.lblDir.setText(_translate("MainWindow", path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/mods"))
 		self.btnDir.setText(_translate("MainWindow", "Select directory..."))
 		self.btnDownload.setText(_translate("MainWindow", "Start\nDownload / Update"))
 		self.grpMcVersion.setTitle(_translate("MainWindow", "Minecraft Version"))
@@ -277,32 +276,3 @@ class Ui_MainWindow(object):
 		
 		self.downloadDir = directory
 		self.lblDir.setText(directory)
-			
-class OutLog:
-	def __init__(self, txtBox, color=None):
-		self.txtBox = txtBox
-		self.color = color
-
-	def write(self, m):
-		if self.color:
-			tc = self.txtBox.textColor()
-			self.txtBox.setTextColor(self.color)
-
-		self.txtBox.moveCursor(QtGui.QTextCursor.End)
-		self.txtBox.insertPlainText(m)
-		
-		if self.color:
-			self.txtBox.setTextColor(tc)
-
-		
-		
-if __name__ == "__main__":
-	import sys
-	app = QtWidgets.QApplication(sys.argv)
-	MainWindow = QtWidgets.QMainWindow()
-	ui = Ui_MainWindow()
-	ui.setupUi(MainWindow)
-	#sys.stdout = OutLog(ui.txtConsole)
-	#sys.stderr = OutLog(ui.txtConsole, QtGui.QColor(255,0,0))
-	MainWindow.show()
-	sys.exit(app.exec_())
