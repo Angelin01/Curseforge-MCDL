@@ -125,8 +125,6 @@ class Ui_MainWindow(object):
 		self.radStable.setGeometry(QtCore.QRect(10, 40, 82, 17))
 		self.radStable.setObjectName("radStable")
 		MainWindow.setCentralWidget(self.centralwidget)
-
-		self.retranslateUi(MainWindow)
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
 		MainWindow.setTabOrder(self.edtFilter, self.btnFilter)
 		MainWindow.setTabOrder(self.btnFilter, self.listDownload)
@@ -167,6 +165,8 @@ class Ui_MainWindow(object):
 
 		# Download
 		self.btnDownload.clicked.connect(self.startDownload)
+		
+		self.retranslateUi(MainWindow)
 
 	def retranslateUi(self, MainWindow):
 		# --------------------
@@ -191,7 +191,7 @@ class Ui_MainWindow(object):
 		self.radAll.setText(_translate("MainWindow", "All types"))
 		self.radReleases.setText(_translate("MainWindow", "Releases only"))
 		self.grpDir.setTitle(_translate("MainWindow", "Download directory"))
-		self.lblDir.setText(_translate("MainWindow", path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/mods"))
+		self.lblDir.setText(_translate("MainWindow", self.downloadDir)) # Manual
 		self.btnDir.setText(_translate("MainWindow", "Select directory..."))
 		self.btnDownload.setText(_translate("MainWindow", "Start\nDownload / Update"))
 		self.grpMcVersion.setTitle(_translate("MainWindow", "Minecraft Version"))

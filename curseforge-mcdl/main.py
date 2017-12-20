@@ -18,12 +18,17 @@ class OutLog:
 			self.txtBox.setTextColor(tc)
 
 class AppMainWindow(QMainWindow):
+	# Overloading the close event to save stuff on exit
 	def closeEvent(self, event):
 		print("THIS WORKS")
 		super().closeEvent(event)
 		
-if __name__ == "__main__":
+# This is recomended by PyQt to avoid crashes on exit: http://pyqt.sourceforge.net/Docs/PyQt5/gotchas.html#crashes-on-exit
+app = None
+
+def main():
 	import sys
+	global app
 	app = QApplication(sys.argv)
 	MainWindow = AppMainWindow()
 	ui = Ui_MainWindow()
@@ -32,3 +37,6 @@ if __name__ == "__main__":
 	#sys.stderr = OutLog(ui.txtConsole, QtGui.QColor(255,0,0))
 	MainWindow.show()
 	sys.exit(app.exec_())
+
+if __name__ == "__main__":
+	main()
