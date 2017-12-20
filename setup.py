@@ -11,9 +11,10 @@ setup(
 	license='MIT',
 	author='Angelin01, Kabbah',
 	url='https://github.com/Angelin01/Curseforge-MCDL',
+	python_requires='>=3.5',
 	install_requires=[
 		'beautifulsoup4',
 		'PyQt5',
-	]
+	],
 	include_package_data=True
 )
