@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from os import path
 
 import downloader
+import cfscrapper
 
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
@@ -149,6 +150,8 @@ class Ui_MainWindow(object):
 		self.downloadDir = path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/mods" # Same
 		
 		self.modDownloadList = []
+		self.modDependencyList = []
+		self.toUpdateDependencyList = []
 		self.waitThread = None
 		
 		# Set radio buttons by default
@@ -166,6 +169,9 @@ class Ui_MainWindow(object):
 		# Import and export
 		self.btnImport.clicked.connect(self.importFile)
 		self.btnExport.clicked.connect(self.exportFile)
+		
+		# Update dependencies
+		self.btnUpdate.clicked.connect(self.updateDependencies)
 
 		# Download
 		self.btnDownload.clicked.connect(self.startDownload)
@@ -276,7 +282,7 @@ class Ui_MainWindow(object):
 		self.btnUpdate.setEnabled(False)
 		self.btnDownload.setEnabled(False)
 		
-		modDownloadList = []
+		self.modDownloadList = []
 		self.treeDownload.clear()
 		releasesOnly = self.radReleases.isChecked()
 		mostRecent = self.radRecent.isChecked()
@@ -314,6 +320,40 @@ class Ui_MainWindow(object):
 		self.btnDownload.setEnabled(True)
 		print("DOWNLOADS COMPLETE!")
 		
+	def updateDependencies(self):
+		# Disable widgets
+		self.edtAddMod.setEnabled(False)
+		self.btnAddMod.setEnabled(False)
+		self.btnRemMod.setEnabled(False)
+		self.chkOptDeps.setEnabled(False)
+		self.btnUpdate.setEnabled(False)
+		self.btnDownload.setEnabled(False)
+	
+		self.modDependencyList = []
+		self.toUpdateDependencyList = []
+		optional = self.chkOptDeps.isChecked()
+		for item in self.modList:
+			mod = cfscrapper.ModItem(item, optional, self.toUpdateDependencyList)
+			self.modDependencyList.append(mod)
+			mod.startCheck()
+		
+		self.waitThread = WaitThread(self.modDependencyList)
+		self.waitThread.finished.connect(self.checksComplete)
+		self.waitThread.start()
+			
+	def checksComplete(self):
+		# Reenable widgets
+		self.edtAddMod.setEnabled(True)
+		self.btnAddMod.setEnabled(True)
+		self.btnRemMod.setEnabled(True)
+		self.chkOptDeps.setEnabled(True)
+		self.btnUpdate.setEnabled(True)
+		self.btnDownload.setEnabled(True)
+		for mod in self.toUpdateDependencyList:
+			if mod not in self.modList:
+				self.modList.append(mod)
+				self.listDownload.addItem(mod)	
+		print("DEPENDENCIES CHECK COMPLETE!")
 		
 class WaitThread(QtCore.QThread):
 	def __init__(self, threadList):

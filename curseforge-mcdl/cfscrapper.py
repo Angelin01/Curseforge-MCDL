@@ -1,8 +1,28 @@
+from PyQt5 import QtCore
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from threading import Lock
 
 # "list" variables are for threading. If passed, functions will add their results to the list
+
+class ModItem(object):
+	def __init__(self, name, optional, dependencyList):
+		self.thread = DependecyThread(name, optional, dependencyList)
+		self.name = name
+		
+	def startCheck(self):
+		print("Checking dependecies for " + self.name)
+		self.thread.start()
+		
+class DependecyThread(QtCore.QThread):
+	def __init__(self, name, optional, dependencyList):
+		self.name = name
+		self.optional = optional
+		self.dependencyList = dependencyList
+		super().__init__()
+		
+	def run(self):
+		checkDependencies(self.name, self.optional, self.dependencyList)
 
 depLock = Lock()
 def checkDependencies(modName, optional, list=None):
