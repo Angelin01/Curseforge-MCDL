@@ -146,8 +146,10 @@ class Ui_MainWindow(object):
 		# Manually added stuff
 		# --------------------
 		self.modList = [] # Temp, should auto import from file in the future
-		self.modDownloadList = [] # Same
 		self.downloadDir = path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/mods" # Same
+		
+		self.modDownloadList = []
+		self.waitThread = None
 		
 		# Set radio buttons by default
 		self.radReleases.setChecked(True)
@@ -258,7 +260,7 @@ class Ui_MainWindow(object):
 		with open(file, 'w') as exportFile:
 			for mod in self.modList:
 				exportFile.write(mod + "\n")
-
+				
 	def startDownload(self):
 		modDownloadList = []
 		self.treeDownload.clear()
@@ -270,6 +272,9 @@ class Ui_MainWindow(object):
 			self.modDownloadList.append(mod)
 			mod.addToTree(self.treeDownload)
 			mod.startDownload()
+		self.waitThread = WaitThread(self.modDownloadList)
+		self.waitThread.finished.connect(self.downloadsComplete)
+		self.waitThread.start()
 			
 	def updateDir(self):
 		directory = QtWidgets.QFileDialog.getExistingDirectory(None, "Select download directory")
@@ -278,3 +283,16 @@ class Ui_MainWindow(object):
 		
 		self.downloadDir = directory
 		self.lblDir.setText(directory)
+		
+	def downloadsComplete(self):
+		print("DOWNLOADS COMPLETE!")
+		
+		
+class WaitThread(QtCore.QThread):
+	def __init__(self, threadList):
+		self.threadList = threadList
+		super().__init__()
+		
+	def run(self):
+		for item in self.threadList:
+			item.thread.wait()

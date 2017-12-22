@@ -59,7 +59,7 @@ class DownloadThread(QtCore.QThread):
 		self.mostRecent = mostRecent
 		self.list = list
 		self.downloadDir = downloadDir
-		QtCore.QThread.__init__(self)
+		super().__init__()
 	
 	def run(self):
 		dllink = cfscrapper.downloadLink(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list)
