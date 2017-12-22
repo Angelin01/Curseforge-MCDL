@@ -36,15 +36,15 @@ class ModItem(object):
 	
 	def statusKept(self):
 		self.item.setText(1, "Kept")
-		self.item.setIcon(1, QtGui.QIcon("icons/kept.ico"))
+		self.item.setIcon(1, QtGui.QIcon(path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/icons/kept.ico"))
 	def statusFailed(self):
 		self.item.setText(1, "Failed")
-		self.item.setIcon(1, QtGui.QIcon("icons/failed.ico"))
+		self.item.setIcon(1, QtGui.QIcon(path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/icons/failed.ico"))
 	def statusDownloading(self):
 		self.item.setText(1, "Downloading")
 	def statusComplete(self):
 		self.item.setText(1, "Complete")
-		self.item.setIcon(1, QtGui.QIcon("icons/complete.ico"))
+		self.item.setIcon(1, QtGui.QIcon(path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/icons/complete.ico"))
 
 class DownloadThread(QtCore.QThread):
 	kept = QtCore.pyqtSignal()
@@ -59,7 +59,7 @@ class DownloadThread(QtCore.QThread):
 		self.mostRecent = mostRecent
 		self.list = list
 		self.downloadDir = downloadDir
-		super().__init__()
+		QtCore.QThread.__init__(self)
 	
 	def run(self):
 		dllink = cfscrapper.downloadLink(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list)

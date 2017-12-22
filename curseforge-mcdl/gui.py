@@ -262,6 +262,20 @@ class Ui_MainWindow(object):
 				exportFile.write(mod + "\n")
 				
 	def startDownload(self):
+		# Disable widgets
+		self.edtAddMod.setEnabled(False)
+		self.btnAddMod.setEnabled(False)
+		self.btnRemMod.setEnabled(False)
+		self.cmbMcVersion.setEnabled(False)
+		self.radAll.setEnabled(False)
+		self.radRecent.setEnabled(False)
+		self.radReleases.setEnabled(False)
+		self.radStable.setEnabled(False)
+		self.btnDir.setEnabled(False)
+		self.chkOptDeps.setEnabled(False)
+		self.btnUpdate.setEnabled(False)
+		self.btnDownload.setEnabled(False)
+		
 		modDownloadList = []
 		self.treeDownload.clear()
 		releasesOnly = self.radReleases.isChecked()
@@ -285,6 +299,19 @@ class Ui_MainWindow(object):
 		self.lblDir.setText(directory)
 		
 	def downloadsComplete(self):
+		# Reenable widgets
+		self.edtAddMod.setEnabled(True)
+		self.btnAddMod.setEnabled(True)
+		self.btnRemMod.setEnabled(True)
+		self.cmbMcVersion.setEnabled(True)
+		self.radAll.setEnabled(True)
+		self.radRecent.setEnabled(True)
+		self.radReleases.setEnabled(True)
+		self.radStable.setEnabled(True)
+		self.btnDir.setEnabled(True)
+		self.chkOptDeps.setEnabled(True)
+		self.btnUpdate.setEnabled(True)
+		self.btnDownload.setEnabled(True)
 		print("DOWNLOADS COMPLETE!")
 		
 		
