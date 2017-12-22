@@ -23,6 +23,7 @@ class DependecyThread(QtCore.QThread):
 		
 	def run(self):
 		checkDependencies(self.name, self.optional, self.dependencyList)
+		print("Completed dependency check for " + self.name)
 
 depLock = Lock()
 def checkDependencies(modName, optional, list=None):
