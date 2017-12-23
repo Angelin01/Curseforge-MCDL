@@ -176,6 +176,10 @@ class Ui_MainWindow(object):
 		# Download
 		self.btnDownload.clicked.connect(self.startDownload)
 		
+		# Filter
+		self.btnFilter.clicked.connect(self.filterMods)
+		self.edtFilter.returnPressed.connect(self.filterMods)
+		
 		self.retranslateUi(MainWindow)
 
 	def retranslateUi(self, MainWindow):
@@ -354,6 +358,19 @@ class Ui_MainWindow(object):
 				self.modList.append(mod)
 				self.listDownload.addItem(mod)	
 		print("DEPENDENCIES CHECK COMPLETE!")
+		
+	def filterMods(self):
+		filterWord = self.edtFilter.text()
+		filteredMods = []
+		self.filteredMods = []
+		self.listDownload.clear()
+		
+		for mod in self.modList:
+			if filterWord in mod:
+				filteredMods.append(mod)
+		
+		for mod in filteredMods:
+			self.listDownload.addItem(mod)
 		
 class WaitThread(QtCore.QThread):
 	def __init__(self, threadList):
