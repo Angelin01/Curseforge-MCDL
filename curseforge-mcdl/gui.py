@@ -5,6 +5,22 @@ import downloader
 import cfscrapper
 
 class Ui_MainWindow(object):
+	def __init__(self, config=None):
+		if config is None:
+			self.modList = []
+			self.downloadDir = path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/mods"
+			self.importDir = path.dirname(path.abspath(__file__)).replace(path.sep, "/")
+			self.exportDir = path.dirname(path.abspath(__file__)).replace(path.sep, "/")
+			self.cmbMcIndex = 0
+			self.mostRecent = False
+			self.releasesOnly = True
+			self.optionalDeps = False
+		
+		self.modDownloadList = []
+		self.modDependencyList = []
+		self.toUpdateDependencyList = []
+		self.waitThread = None
+
 	def setupUi(self, MainWindow):
 	
 		# --------------------
@@ -146,17 +162,28 @@ class Ui_MainWindow(object):
 		# --------------------
 		# Manually added stuff
 		# --------------------
-		self.modList = [] # Temp, should auto import from file in the future
-		self.downloadDir = path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/mods" # Same
+		# Set starting selections
+		self.modList = list(set(self.modList))
+		for mod in self.modList:
+			self.listDownload.addItem(mod)
+			
+		if self.cmbMcIndex >= 0 and self.cmbMcIndex <= 5:
+			self.cmbMcVersion.setCurrentIndex(self.cmbMcIndex)
+		else:
+			self.cmbMcVersion.setCurrentIndex(0)
 		
-		self.modDownloadList = []
-		self.modDependencyList = []
-		self.toUpdateDependencyList = []
-		self.waitThread = None
+		if self.mostRecent == True:
+			self.radRecent.setChecked(True)
+		else:
+			self.radStable.setChecked(True)
 		
-		# Set radio buttons by default
-		self.radReleases.setChecked(True)
-		self.radStable.setChecked(True)
+		if self.releasesOnly == True:
+			self.radReleases.setChecked(True)
+		else:
+			self.radAll.setChecked(True)
+			
+		if self.optionalDeps == True:
+			self.chkOptDeps.setChecked(True)
 		
 		# Download directory
 		self.btnDir.clicked.connect(self.updateDir)
@@ -205,7 +232,7 @@ class Ui_MainWindow(object):
 		self.radAll.setText(_translate("MainWindow", "All types"))
 		self.radReleases.setText(_translate("MainWindow", "Releases only"))
 		self.grpDir.setTitle(_translate("MainWindow", "Download directory"))
-		self.lblDir.setText(_translate("MainWindow", self.downloadDir)) # Manual
+		self.lblDir.setText(_translate("MainWindow", self.downloadDir)) # Starting downloader folder
 		self.btnDir.setText(_translate("MainWindow", "Select directory..."))
 		self.btnDownload.setText(_translate("MainWindow", "Start\nDownload / Update"))
 		self.grpMcVersion.setTitle(_translate("MainWindow", "Minecraft Version"))
@@ -217,7 +244,7 @@ class Ui_MainWindow(object):
 		self.cmbMcVersion.setItemText(5, _translate("MainWindow", "1.7.10"))
 		self.grpRemMod.setTitle(_translate("MainWindow", "Remove selected mods"))
 		self.btnRemMod.setText(_translate("MainWindow", "Remove Mods"))
-		self.grpUpdate.setTitle(_translate("MainWindow", "Update dependencies for selected mods"))
+		self.grpUpdate.setTitle(_translate("MainWindow", "Update dependencies for all mods"))
 		self.chkOptDeps.setText(_translate("MainWindow", "Include optional dependencies"))
 		self.btnUpdate.setText(_translate("MainWindow", "Update dependencies"))
 		self.grpPriority.setTitle(_translate("MainWindow", "Priority"))
@@ -249,10 +276,11 @@ class Ui_MainWindow(object):
 			self.listDownload.takeItem(self.listDownload.indexFromItem(item).row()) # Takes the row from the item's index after searching for the item again... This is so bad, why is there no remove
 			
 	def importFile(self):
-		# For the future: add small hook to save last used dir
-		file = QtWidgets.QFileDialog.getOpenFileName(None, "Select mod list file")[0]
+		file = QtWidgets.QFileDialog.getOpenFileName(None, "Select mod list file", self.importDir)[0]
 		if file == "": # User canceled
 			return
+			
+		self.importDir = path.dirname(file)
 		
 		fileMods = open(file, 'r').readlines()
 		for mod in fileMods:
@@ -262,10 +290,12 @@ class Ui_MainWindow(object):
 				self.listDownload.addItem(mod)		
 		
 	def exportFile(self):
-		file = QtWidgets.QFileDialog.getSaveFileName(None, "Select new mod list file")[0]
+		file = QtWidgets.QFileDialog.getSaveFileName(None, "Select new mod list file", self.exportDir)[0]
 		if file == "": # User canceled
 			return
 		# Overwrite warning is given by dialog itself, neat!
+		
+		self.exportDir = path.dirname(file)
 			
 		with open(file, 'w') as exportFile:
 			for mod in self.modList:
@@ -301,7 +331,7 @@ class Ui_MainWindow(object):
 		self.waitThread.start()
 			
 	def updateDir(self):
-		directory = QtWidgets.QFileDialog.getExistingDirectory(None, "Select download directory")
+		directory = QtWidgets.QFileDialog.getExistingDirectory(None, "Select download directory", self.downloadDir)
 		if directory == "":
 			return
 		

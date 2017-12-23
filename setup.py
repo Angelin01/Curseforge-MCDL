@@ -15,6 +15,7 @@ setup(
 	install_requires=[
 		'beautifulsoup4',
 		'PyQt5',
+		'requests',
 	],
 	include_package_data=True
 )
