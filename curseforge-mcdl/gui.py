@@ -15,6 +15,15 @@ class Ui_MainWindow(object):
 			self.mostRecent = False
 			self.releasesOnly = True
 			self.optionalDeps = False
+		else:
+			self.modList = config['General']['modlist'].split(',')
+			self.downloadDir = config['General']['downloadDir']
+			self.importDir = config['General']['importDir']
+			self.exportDir = config['General']['exportDir']
+			self.cmbMcIndex = int(config['General']['cmbMcIndex'])
+			self.mostRecent = True if config['General']['mostRecent'] == 'True' else False
+			self.releasesOnly = True if config['General']['releasesOnly'] == 'True' else False
+			self.optionalDeps = True if config['General']['optionalDeps'] == 'True' else False
 		
 		self.modDownloadList = []
 		self.modDependencyList = []

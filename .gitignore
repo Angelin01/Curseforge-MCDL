@@ -1,3 +1,7 @@
+# Program generated files and stuff
+curseforge-mcdl/config.cfg
+curseforge-mcdl/mods/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
