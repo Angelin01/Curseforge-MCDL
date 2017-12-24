@@ -11,7 +11,7 @@ class ModItem(object):
 		self.name = name
 		
 	def startCheck(self):
-		print("Checking dependecies for " + self.name)
+		print(self.name + ": dependency check starting")
 		self.thread.start()
 		
 class DependecyThread(QtCore.QThread):
@@ -23,7 +23,7 @@ class DependecyThread(QtCore.QThread):
 		
 	def run(self):
 		checkDependencies(self.name, self.optional, self.dependencyList)
-		print("Completed dependency check for " + self.name)
+		print(self.name + ": dependency check complete")
 
 depLock = Lock()
 def checkDependencies(modName, optional, list=None):

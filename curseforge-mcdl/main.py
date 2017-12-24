@@ -1,23 +1,16 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5 import QtGui
 from gui import Ui_MainWindow
 from os import path
 from configparser import ConfigParser
 
 class OutLog:
-	def __init__(self, txtBox, color=None):
+	def __init__(self, txtBox):
 		self.txtBox = txtBox
-		self.color = color
 
 	def write(self, m):
-		if self.color:
-			tc = self.txtBox.textColor()
-			self.txtBox.setTextColor(self.color)
-
 		self.txtBox.moveCursor(QtGui.QTextCursor.End)
 		self.txtBox.insertPlainText(m)
-		
-		if self.color:
-			self.txtBox.setTextColor(tc)
 
 class AppMainWindow(QMainWindow):
 	# Overloading the close event to save stuff on exit
@@ -60,8 +53,7 @@ def main():
 		ui = Ui_MainWindow()
 		
 	ui.setupUi(MainWindow)
-	#sys.stdout = OutLog(ui.txtConsole)
-	#sys.stderr = OutLog(ui.txtConsole, QtGui.QColor(255,0,0))
+	sys.stdout = OutLog(ui.txtConsole)
 	MainWindow.show()
 	sys.exit(app.exec_())
 

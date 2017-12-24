@@ -3,6 +3,7 @@ from os import path
 
 import downloader
 import cfscrapper
+import sys
 
 class Ui_MainWindow(object):
 	def __init__(self, config=None):
@@ -268,12 +269,13 @@ class Ui_MainWindow(object):
 			return
 		
 		if modToAdd in self.modList:
-			# Pop an error? 
+			print("ERROR: Mod already in mod list")
 			return
 		
 		self.modList.append(modToAdd)
 		self.listDownload.addItem(modToAdd)
 		self.edtAddMod.clear()
+		print("Successfully added mod " + modToAdd)
 		
 	def remMod(self):
 		itemsToRem = self.listDownload.selectedItems()
@@ -283,7 +285,8 @@ class Ui_MainWindow(object):
 		for item in itemsToRem:
 			self.modList.remove(item.text())
 			self.listDownload.takeItem(self.listDownload.indexFromItem(item).row()) # Takes the row from the item's index after searching for the item again... This is so bad, why is there no remove
-			
+		print("Removed " + str(len(itemsToRem)) + " mods")
+		
 	def importFile(self):
 		file = QtWidgets.QFileDialog.getOpenFileName(None, "Select mod list file", self.importDir)[0]
 		if file == "": # User canceled
@@ -311,6 +314,7 @@ class Ui_MainWindow(object):
 				exportFile.write(mod + "\n")
 				
 	def startDownload(self):
+		print("Downloading / Updating mods...")
 		# Disable widgets
 		self.edtAddMod.setEnabled(False)
 		self.btnAddMod.setEnabled(False)
@@ -346,6 +350,7 @@ class Ui_MainWindow(object):
 		
 		self.downloadDir = directory
 		self.lblDir.setText(directory)
+		print("Download directory updated!")
 		
 	def downloadsComplete(self):
 		# Reenable widgets
@@ -364,6 +369,7 @@ class Ui_MainWindow(object):
 		print("DOWNLOADS COMPLETE!")
 		
 	def updateDependencies(self):
+		print("Updating dependencies...")
 		# Disable widgets
 		self.edtAddMod.setEnabled(False)
 		self.btnAddMod.setEnabled(False)
