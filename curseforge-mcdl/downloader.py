@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from requests import get
 from os import path, mkdir
+import hashlib
 
 import cfscrapper
 
@@ -64,10 +65,24 @@ class DownloadThread(QtCore.QThread):
 	def run(self):
 		dllink = cfscrapper.downloadLink(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list)
 		if dllink is not None:
-			self.downloading.emit()
-			downloadJob(dllink[0], dllink[1], self.downloadDir)
-			self.complete.emit()
+			if path.isfile(self.downloadDir + "/" + self.name + ".jar"):
+				if cfscrapper.modFileMD5(dllink[0]) == md5Chunks(self.downloadDir + "/" + self.name + ".jar"):
+					# File exists and is up to date
+					#print(dllink[1] + ": up to date")
+					self.kept.emit()
+				else:
+					# File exists, but is outdated/broken
+					#print(dllink[1] + ": MD5 check NOT OK")
+					self.downloading.emit()
+					downloadJob(dllink[0], self.name + ".jar", self.downloadDir)
+					self.complete.emit()
+			else:
+				# File does not exist
+				self.downloading.emit()
+				downloadJob(dllink[0], self.name + ".jar", self.downloadDir)
+				self.complete.emit()
 		else:
+			# Couldn't get the download link
 			self.failed.emit()
 		
 def downloadJob(url, outFile, downloadDir):
@@ -84,3 +99,9 @@ def downloadJob(url, outFile, downloadDir):
 		modFile.close()
 	print(outFile + ": download finished")
 
+def md5Chunks(filePath):
+	md5 = hashlib.md5()
+	with open(filePath, "rb") as file:
+		for chunk in iter(lambda: file.read(4096), b""):
+			md5.update(chunk)
+	return md5.hexdigest()
