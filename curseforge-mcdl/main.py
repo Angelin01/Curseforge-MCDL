@@ -54,6 +54,7 @@ def main():
 		
 	ui.setupUi(MainWindow)
 	sys.stdout = OutLog(ui.txtConsole)
+	app.setWindowIcon(QtGui.QIcon(path.dirname(path.abspath(__file__)).replace(path.sep, "/") + "/icons/mcdl.ico"))
 	MainWindow.show()
 	sys.exit(app.exec_())
 

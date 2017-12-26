@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 	
 setup(
 	name='Curseforge-CMDL',
-	version='0.1',
+	version='1.0',
 	description='Simple downloader for Minecraft mods from CurseForge',
 	long_description=long_description,
 	license='MIT',
