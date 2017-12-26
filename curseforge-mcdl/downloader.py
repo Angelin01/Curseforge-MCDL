@@ -33,9 +33,9 @@ class ModItem(object):
 		self.thread.failed.connect(self.statusFailed)
 		self.thread.downloading.connect(self.statusDownloading)
 		self.thread.complete.connect(self.statusComplete)
-		self.thread.setPriority(QtCore.QThread.LowPriority)
 		print(self.name + ": starting download")
 		self.thread.start()
+		self.thread.setPriority(QtCore.QThread.LowPriority)
 	
 	def statusKept(self):
 		self.item.setText(1, "Kept")

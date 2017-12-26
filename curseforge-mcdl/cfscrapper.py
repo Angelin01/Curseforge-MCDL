@@ -11,9 +11,9 @@ class ModItem(object):
 		self.name = name
 		
 	def startCheck(self):
-		self.thread.setPriority(QtCore.QThread.LowPriority)
 		print(self.name + ": dependency check starting")
 		self.thread.start()
+		self.thread.setPriority(QtCore.QThread.LowPriority)
 		
 class DependecyThread(QtCore.QThread):
 	def __init__(self, name, optional, dependencyList):
