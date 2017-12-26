@@ -33,6 +33,7 @@ class ModItem(object):
 		self.thread.failed.connect(self.statusFailed)
 		self.thread.downloading.connect(self.statusDownloading)
 		self.thread.complete.connect(self.statusComplete)
+		print(self.name + ": starting download")
 		self.thread.start()
 	
 	def statusKept(self):
@@ -60,7 +61,7 @@ class DownloadThread(QtCore.QThread):
 		self.mostRecent = mostRecent
 		self.list = list
 		self.downloadDir = downloadDir
-		QtCore.QThread.__init__(self)
+		super().__init__()
 	
 	def run(self):
 		dllink = cfscrapper.downloadLink(self.name, self.mcVersion, self.releasesOnly, self.mostRecent, self.list)
@@ -89,7 +90,6 @@ def downloadJob(url, outFile, downloadDir):
 	if path.exists(downloadDir) == False:
 		mkdir(downloadDir)
 	
-	print(outFile + ": starting download")
 	request = get(url, stream=True)
 	with open(downloadDir + "/" + outFile, "wb") as modFile:
 		size = int(request.headers.get("content-length"))
@@ -97,7 +97,6 @@ def downloadJob(url, outFile, downloadDir):
 			modFile.write(chunk)
 			modFile.flush()
 		modFile.close()
-	print(outFile + ": download finished")
 
 def md5Chunks(filePath):
 	md5 = hashlib.md5()

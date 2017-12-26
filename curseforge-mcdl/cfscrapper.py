@@ -23,7 +23,7 @@ class DependecyThread(QtCore.QThread):
 		
 	def run(self):
 		checkDependencies(self.name, self.optional, self.dependencyList)
-		print(self.name + ": dependency check complete")
+		#print(self.name + ": dependency check complete")
 
 depLock = Lock()
 def checkDependencies(modName, optional, list=None):
@@ -31,7 +31,7 @@ def checkDependencies(modName, optional, list=None):
 	# Webpage consists of https://minecraft.curseforge.com/projects/modName/relations/dependencies[?filter-related-dependencies=3] (the last part will only grab required libraries)
 		parsed = BeautifulSoup(urlopen("https://minecraft.curseforge.com/projects/" + modName + "/relations/dependencies" + ("?filter-related-dependencies=3" if not optional else "")), 'html.parser')
 	except:
-		print("Mod URL for " + modName + "doesn't exist")
+		#print("Mod URL for " + modName + "doesn't exist")
 		return([])
 	
 	dependencyList = []
