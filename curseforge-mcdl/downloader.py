@@ -88,9 +88,6 @@ class DownloadThread(QtCore.QThread):
 			self.failed.emit()
 		
 def downloadJob(url, outFile, downloadDir):
-	if path.exists(downloadDir) == False:
-		mkdir(downloadDir)
-	
 	request = get(url, stream=True)
 	with open(downloadDir + "/" + outFile, "wb") as modFile:
 		size = int(request.headers.get("content-length"))
