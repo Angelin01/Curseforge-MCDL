@@ -297,7 +297,7 @@ class Ui_MainWindow(object):
 		fileMods = open(file, 'r').readlines()
 		for mod in fileMods:
 			mod = mod.strip()
-			if not mod.startswith('#') and mod not in self.modList:
+			if not mod.startswith('#') and mod != "" and mod not in self.modList:
 				self.modList.append(mod)
 				self.listDownload.addItem(mod)		
 		
