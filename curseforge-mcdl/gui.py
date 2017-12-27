@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from os import path
+from os import path, mkdir
 
 import downloader
 import cfscrapper
@@ -334,6 +334,10 @@ class Ui_MainWindow(object):
 		releasesOnly = self.radReleases.isChecked()
 		mostRecent = self.radRecent.isChecked()
 		downloadDir = self.downloadDir
+		
+		if path.exists(downloadDir) == False:
+			mkdir(downloadDir)
+		
 		for item in self.modList:
 			mod = downloader.ModItem(item, self.cmbMcVersion.currentText(), releasesOnly, mostRecent, None, downloadDir)
 			self.modDownloadList.append(mod)
